@@ -1,0 +1,38 @@
+plugins {
+    id 'groovy'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'maven-publish'
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    //asm 流工具
+    implementation 'org.ow2.asm:asm:7.1'
+    implementation 'org.ow2.asm:asm-util:7.1'
+    implementation 'org.ow2.asm:asm-commons:7.1'
+    //用来引入Google Transform依赖
+    // http://quinnchen.cn/2018/09/13/2018-09-13-asm-transform
+    implementation 'com.android.tools.build:gradle:4.1.3'
+    //对asm 和 transform 进行封装
+    //https://github.com/Leaking/Hunter
+    implementation 'cn.quinnchen.hunter:hunter-transform:1.2.3'
+
+}
+
+publishing {
+    publications {
+        plugin(MavenPublication) {
+            from components.java //要把源码生成的jar包上传,固定这样写
+            groupId 'com.shian'
+            artifactId 'monitor'
+            version '1.0'
+        }
+    }
+    repositories {
+        maven {
+            // $rootDir 表示你项目的根目录
+            url = "$rootDir/repo"
+        }
+    }
+}
